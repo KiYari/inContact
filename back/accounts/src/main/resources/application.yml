@@ -8,17 +8,4 @@ spring:
     show-sql: true
     generate-ddl: true
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 63951511281-tieke1s01h0i1vo3ej2m95jqli2br08p.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
-              - openid
-
-
 

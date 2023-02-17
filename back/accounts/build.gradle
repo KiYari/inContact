@@ -30,6 +30,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation 'org.modelmapper:modelmapper:3.1.1'
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
+	implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
+
 
 }
 
