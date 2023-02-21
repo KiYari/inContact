@@ -16,4 +16,6 @@ refresh-token:
   private: ${REFRESH_TOKEN_PRIVATE_KEY_PATH}
   public: ${REFRESH_TOKEN_PUBLIC_KEY_PATH}
 
+server:
+  port: 8000
 

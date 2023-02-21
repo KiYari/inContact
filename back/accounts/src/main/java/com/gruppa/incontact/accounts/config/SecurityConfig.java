@@ -36,18 +36,20 @@ public class SecurityConfig {
                                 .anyRequest().authenticated();
                     }
                 )
-                .exceptionHandling()
-                .authenticationEntryPoint((req, res, authException) -> {
-                    Map<String, Object> responseMap = new HashMap<>();
-                    ObjectMapper mapper = new ObjectMapper();
-                    res.setStatus(401);
-                    responseMap.put("error", true);
-                    responseMap.put("message", "Unauthorized request");
-                    res.setHeader("content-type", "application/json");
-                    String responseMsg = mapper.writeValueAsString(responseMap);
-                    res.getWriter().write(responseMsg);
+                .exceptionHandling(e -> {
+                    e.authenticationEntryPoint((req, res, authException) -> {
+                        Map<String, Object> responseMap = new HashMap<>();
+                        ObjectMapper mapper = new ObjectMapper();
+                        System.out.println("excepted");
+                        res.setStatus(401);
+                        responseMap.put("error", true);
+                        responseMap.put("message", "Unauthorized request. Plesae authorize yourself");
+                        res.setHeader("content-type", "application/json");
+                        res.setHeader("Access-Control-Allow-Origin", "*");
+                        String responseMsg = mapper.writeValueAsString(responseMap);
+                        res.getWriter().write(responseMsg);
+                    });
                 })
-                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

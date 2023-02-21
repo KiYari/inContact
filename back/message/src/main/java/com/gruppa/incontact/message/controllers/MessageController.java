@@ -8,6 +8,7 @@ import com.gruppa.inContact.services.MessageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,0 +1,17 @@
+.main {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - clamp(15%, 200px, 600px));
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+.boxed {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.contentHolder {
+    display: flex;
+    width: 100vw;
+}
