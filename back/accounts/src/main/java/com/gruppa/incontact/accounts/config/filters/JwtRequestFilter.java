@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -31,7 +30,9 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
-        if(requestTokenHeader!=null && requestTokenHeader.startsWith("Bearer ")) {
+        if(requestTokenHeader!=null && requestTokenHeader.startsWith("Bearer ")
+                && !requestTokenHeader.equals("Bearer ")
+                && !requestTokenHeader.equals("Bearer")) {
             String jwtToken = requestTokenHeader.substring(7);
             try {
                 String username = jwtTokenUtils.getUsernameFromToken(jwtToken);

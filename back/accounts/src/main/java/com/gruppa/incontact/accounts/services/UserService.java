@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,14 +22,17 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepo repo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo repo) {
+    public UserService(UserRepo repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(User user) {
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setCreatedAt(LocalDateTime.now());
             user.setLastUpdate(LocalDateTime.now());
             user.setLastVisit(LocalDateTime.now());
@@ -58,7 +62,7 @@ public class UserService implements UserDetailsService {
 
         userFromDb.setName(user.getName());
         userFromDb.setEmail(user.getEmail());
-        userFromDb.setPassword(user.getPassword());
+        userFromDb.setPassword(passwordEncoder.encode(user.getPassword()));
         userFromDb.setUserpic(user.getUserpic());
         userFromDb.setLastUpdate(LocalDateTime.now());
         userFromDb.setLastVisit(LocalDateTime.now());

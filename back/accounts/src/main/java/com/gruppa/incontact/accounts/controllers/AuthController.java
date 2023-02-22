@@ -8,8 +8,8 @@ import com.gruppa.incontact.accounts.services.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,11 +30,13 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtils;
     private final ModelMapper modelMapper;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthController(UserService userService, JwtTokenUtil jwtTokenUtils, ModelMapper modelMapper) {
+    public AuthController(UserService userService, JwtTokenUtil jwtTokenUtils, ModelMapper modelMapper, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtTokenUtils = jwtTokenUtils;
         this.modelMapper = modelMapper;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping(value = "/login", consumes = "application/json")
@@ -41,10 +44,10 @@ public class AuthController {
         Map<String, Object> response = new HashMap<>();
         try {
             UserDetails userDetails = userService.loadUserByUsername(authDto.getName());
-            Authentication auth = new UsernamePasswordAuthenticationToken(
+            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     userDetails.getUsername(),
                     userDetails.getPassword(),
-                    userDetails.getAuthorities());
+                    userDetails.getAuthorities()));
 
             if(auth.isAuthenticated()) {
                 logger.info("Logged in");
@@ -53,31 +56,16 @@ public class AuthController {
                 response.put("message", "Logged in");
                 response.put("token", token);
                 return ResponseEntity.status(200).body(response);
-            } else {
-                response.put("error", true);
-                response.put("message", "Invalid credentials");
-                return ResponseEntity.status(401).body(response);
             }
-
-        } catch (DisabledException e) {
-            response.put("error", true);
-            response.put("message", "User is disabled");
-            return ResponseEntity.status(401).body(response);
-
-        } catch (BadCredentialsException e) {
-            response.put("error", true);
-            response.put("message", "Bad credentials");
-            return ResponseEntity.status(401).body(response);
-
         } catch (NullPointerException e) {
             response.put("error", true);
             response.put("message", "Invalid username");
             return ResponseEntity.status(401).body(response);
-        } catch (Exception e) {
-            response.put("error", true);
-            response.put("message", "something went wrong");
-            return ResponseEntity.status(500).body(response);
         }
+
+        response.put("error", true);
+        response.put("message", "Not authenticated. Please, try again");
+        return ResponseEntity.status(401).body(response);
     }
 
     @PostMapping(value = "/register", consumes = "application/json")
