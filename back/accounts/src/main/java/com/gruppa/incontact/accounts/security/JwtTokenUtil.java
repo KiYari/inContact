@@ -2,11 +2,12 @@ package com.gruppa.incontact.accounts.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
@@ -18,7 +19,11 @@ import java.util.function.Function;
 public class JwtTokenUtil implements Serializable {
     public static  final long JWT_TOKEN_VALIDITY = 10 * 24 * 60 * 60;
 
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private final String secret = "theanswertothesecretisverysecretreally";
+
+
+    Key key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -41,8 +46,8 @@ public class JwtTokenUtil implements Serializable {
     private Claims getAllClaimsFromToken(String token) {
         return Jwts
                 .parserBuilder()
-                .setSigningKey(key)
                 .build()
+                .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -53,9 +58,9 @@ public class JwtTokenUtil implements Serializable {
                 .builder()
                 .setClaims(claims)
                 .setSubject(user.getUsername())
+                .signWith(key)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ JWT_TOKEN_VALIDITY * 1000))
-                .signWith(key)
                 .compact();
     }
 
