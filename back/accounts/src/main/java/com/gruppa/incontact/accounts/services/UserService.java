@@ -90,4 +90,8 @@ public class UserService implements UserDetailsService {
         if (userFromContext.getAuthorities().contains(Role.ADMIN)) return;
         if(id != userFromContext.getId()) throw new NotYourIdException();
     }
+
+    public long getUserIdByName(String name) {
+        return repo.findByName(name).getId();
+    }
 }

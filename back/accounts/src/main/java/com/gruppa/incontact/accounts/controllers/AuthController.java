@@ -55,6 +55,7 @@ public class AuthController {
                 response.put("error", false);
                 response.put("message", "Logged in");
                 response.put("token", token);
+                response.put("id", userService.getUserIdByName(authDto.getName()));
                 return ResponseEntity.status(200).body(response);
             }
         } catch (NullPointerException e) {

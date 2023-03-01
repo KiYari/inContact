@@ -1,4 +1,4 @@
-package com.gruppa.inContact.model;
+package com.gruppa.incontact.message.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -21,6 +21,7 @@ public class Message {
     private long id;
     @JsonView(Views.IdName.class)
     private String text;
+    private long userId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonView(Views.FullMessage.class)
     private LocalDateTime creationDate;

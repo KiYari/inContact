@@ -1,4 +1,4 @@
-package com.gruppa.inContact.model;
+package com.gruppa.incontact.message.model;
 
 public final class Views {
     public interface Id {}

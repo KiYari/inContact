@@ -10,7 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,18 +36,21 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(req -> {
                         req
-                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().authenticated();
                     }
                 )
+                .cors()
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint((req, res, authException) -> {
                     Map<String, Object> responseMap = new HashMap<>();
                     ObjectMapper mapper = new ObjectMapper();
-                    res.setStatus(401);
+                    res.setStatus(404);
                     responseMap.put("error", true);
-                    responseMap.put("message", "Unauthorized request");
-                    res.setHeader("content-type", "application/json");
+                    responseMap.put("message", "Unexpected request. Please, try another");
+                    res.setHeader("Content-Type", "application/json");
+                    res.setHeader("Access-Control-Allow-Origin", "*");
                     String responseMsg = mapper.writeValueAsString(responseMap);
                     res.getWriter().write(responseMsg);
                 })

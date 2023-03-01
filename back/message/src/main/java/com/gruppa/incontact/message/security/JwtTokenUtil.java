@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
@@ -16,9 +17,10 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil implements Serializable {
-    public static  final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    private final String secret = "theanswertothesecretisverysecretreally";
 
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    Key key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -45,18 +47,6 @@ public class JwtTokenUtil implements Serializable {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    public String generateToken(UserDetails user) {
-        Map<String, Object> claims = new HashMap<>();
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ JWT_TOKEN_VALIDITY * 1000))
-                .signWith(key)
-                .compact();
     }
 
     public Boolean validateToken(String token, UserDetails user) {

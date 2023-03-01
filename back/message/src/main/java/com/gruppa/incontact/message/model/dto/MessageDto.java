@@ -1,4 +1,4 @@
-package com.gruppa.inContact.model.dto;
+package com.gruppa.incontact.message.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDto {
+    private long userId;
     private String text;
 }

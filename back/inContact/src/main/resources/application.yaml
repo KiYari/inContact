@@ -1,9 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://26.175.81.229:5432/inContact
-    username: postgres
-    password: root
-  jpa:
-    show-sql: true
-    generate-ddl: true
-
