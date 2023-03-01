@@ -28,8 +28,8 @@ function getItem(
 
 const App: FC<headerProps> = () => {
     const [isLoading, setIsLoading] = useState(false)
-    const links = ['/', '/top10', '/flop10', '/last']
-    const items1: MenuProps['items'] = ['Profile', 'Top 10', 'Flop 10', 'Last'].map((title, key) => ({
+    const links = ['/', '/auth/Login']
+    const items1: MenuProps['items'] = ['Home', 'Login'].map((title, key) => ({
         key: key,
         label: (<Link onClick={()=> {
             localStorage.setItem('selectedKey', String(key))

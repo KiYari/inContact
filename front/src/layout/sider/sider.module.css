@@ -41,6 +41,12 @@
 
 .editButton:hover {
     cursor: pointer;
+    transform: scale(1.05);
+}
+
+.logoutButton:hover {
+    cursor: pointer;
+    transform: scale(1.05);
 }
 
 .createAccount {
@@ -51,4 +57,8 @@
     cursor: pointer;
     text-decoration: underline;
     color: #4a4a4a
+}
+
+.invalid {
+    color: red;
 }

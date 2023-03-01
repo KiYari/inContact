@@ -1,5 +1,5 @@
 export default interface message {
-    id?: number,
+    userId?: number,
     text: string
 }
 

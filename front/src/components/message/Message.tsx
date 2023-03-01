@@ -2,6 +2,7 @@ import {FC, useState} from "react";
 import {Button, Card, Input} from "antd";
 import message from "@/components/message/message.props";
 import axios from "axios";
+import {connect} from "@/util/ws";
 interface MessageProps {
     children?: any
     message: message
@@ -10,6 +11,7 @@ interface MessageProps {
 }
 
 const Message:FC<MessageProps> = ({children, message:message, deletedClick, editClick}) => {
+
     const [isEditable, setIsEditable] = useState(false)
     const onClickDeleteButton = () => {
         axios.delete('http://localhost:8080/message/' + message.id)
