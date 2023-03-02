@@ -3,6 +3,8 @@ import styles from "@/layout/sider/sider.module.css";
 import {Input} from "antd";
 import Cookies from "universal-cookie";
 import axios, {AxiosError, AxiosResponse} from "axios";
+import Router from "next/router";
+import {host} from "@/util/host.config";
 
 interface AuthProps {
     isLogined?: any
@@ -28,7 +30,7 @@ const Authentication:FC<AuthProps> = ({isLogined, incorrect, className}) => {
             password: password
         }
 
-        return await axios.post('http://localhost:8000/api/auth/login', auth,
+        return await axios.post(`http://${host}:8000/api/auth/login`, auth,
             {
                 headers: {
                     "Content-type": "application/json",
@@ -43,6 +45,8 @@ const Authentication:FC<AuthProps> = ({isLogined, incorrect, className}) => {
                 cookies.set('jwt-token', res.data.token)
                 cookies.set('user-id', res.data.id)
                 localStorage.setItem('logined', 'true')
+                Router.push("/")
+                localStorage.setItem('selectedKey', '0')
                 isLogined()
             })
             .catch((e:AxiosError) => {

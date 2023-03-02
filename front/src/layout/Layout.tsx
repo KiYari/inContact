@@ -17,15 +17,16 @@ const Layout: FC<layoutProps> = ({children}) => {
 
     return(
         <div>
-            {isLoginPage? <><Header/>
+            <Header/>
+            {isLoginPage?
                 <div className={styles.contentHolder}>
                     <main className={styles.mainCut}>
                         <Sider/>
                     </main>
                 </div>
-            </>
+
                 :
-                <><Header/>
+
                 <div className={styles.contentHolder}>
                     <main className={styles.main}>
                         {children}
@@ -33,7 +34,7 @@ const Layout: FC<layoutProps> = ({children}) => {
 
                     <Sider/>
                 </div>
-            </>}
+            }
         </div>
     )
 }

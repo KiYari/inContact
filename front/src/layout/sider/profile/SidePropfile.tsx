@@ -4,6 +4,7 @@ import Image from "next/image";
 import {FC, useEffect, useState} from "react";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import Router from "next/router";
 
 interface ProfileProps {
     logout?:any
@@ -24,6 +25,8 @@ const SidePropfile:FC<ProfileProps> = ({logout}) => {
         localStorage.setItem('logined', 'false')
         cookies.remove('jwt-token')
         cookies.remove('user-id')
+        Router.push("/auth/Login")
+        localStorage.setItem('selectedKey', '1')
         logout()
     }
 

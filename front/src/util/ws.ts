@@ -39,7 +39,7 @@ export function disconnect() {
 export function sendMessage(message: message) {
     const cookies = new Cookies
     if (stompClient !== null) {
-        stompClient.send("/app/hello", {"Authorization": "Bearer " + cookies.get("jwt-token")}, JSON.stringify(message))
+        stompClient.send("/im/hello", {"Authorization": "Bearer " + cookies.get("jwt-token")}, JSON.stringify(message))
     }
 
 }

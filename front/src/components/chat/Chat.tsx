@@ -5,6 +5,7 @@ import message from "@/components/message/message.props";
 import axios from "axios";
 import {connect, disconnect, reconnect, sendMessage} from "@/util/ws";
 import Cookies from "universal-cookie";
+import {host} from "@/util/host.config";
 
 interface ChatProps{
 
@@ -20,7 +21,7 @@ const Chat:FC<ChatProps> = () => {
     }, [])
 
     const onMessageEdit = async () => {
-      await axios.get(`http://localhost:9000/message/${cookies.get('user-id')}`, {
+      await axios.get(`http://${host}:9000/message/${cookies.get('user-id')}`, {
           headers: {
               Authorization:`Bearer ${cookies.get('jwt-token')}`
           }
@@ -34,8 +35,9 @@ const Chat:FC<ChatProps> = () => {
         await onMessageEdit()
     }
 
+
     return(
-        <div>
+        <main>
             <Button onClick={() => connect()}>connect</Button>
             <Button onClick={() => reconnect()}>reconnect</Button>
             <Button onClick={() => disconnect()}>disconnect</Button>
@@ -47,16 +49,16 @@ const Chat:FC<ChatProps> = () => {
                     <Input onChange={(e) => setInput(e.target.value)}
                            style={{ width: 'calc(25%)' }}
                            placeholder="Type message" />
-                    <Button type="primary" onClick={() => sendMessageToServer()}>Save Message</Button>
+                    <Button type="primary" onClick={() => sendMessageToServer()}>Send message</Button>
                 </Input.Group>
                 {messages
-                    //@ts-ignore
-                    .sort((m1, m2) => m1.id - m2.id)
-                    .map((m) => <li key={m.userId}><Message message={m}
-                                                        deletedClick={onMessageEdit}
-                                                        editClick={onMessageEdit}/></li>)}
+                    .sort((m1, m2) => m1.text.length - m2.text.length)
+                    .map((m, key) => <li key={key}><Message message={m}
+                                                            deletedClick={onMessageEdit}
+                                                            editClick={onMessageEdit}/></li>)}
             </ul>
-        </div>
+
+        </main>
     )
 }
 

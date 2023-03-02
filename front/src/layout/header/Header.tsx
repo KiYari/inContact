@@ -42,15 +42,17 @@ const App: FC<headerProps> = () => {
     })
 
     return(
-        <header className={styles.header}>
-            {isLoading &&  <Menu
-                className={styles.menu}
-                defaultSelectedKeys={[localStorage.getItem('selectedKey') || '0']}
-                mode="horizontal"
-                items={items1}/>
-            }
+        <div>
+            <header className={styles.header}>
+                {isLoading &&  <Menu
+                    className={styles.menu}
+                    defaultSelectedKeys={[localStorage.getItem('selectedKey') || '0']}
+                    mode="horizontal"
+                    items={items1}/>
+                }
 
-        </header>
+            </header>
+        </div>
     )
 }
 

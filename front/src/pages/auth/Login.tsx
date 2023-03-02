@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect} from "react";
 import Layout from "@/layout/Layout";
 import Cookies from "universal-cookie";
 import Router from "next/router";
@@ -10,12 +10,15 @@ interface LoginProps {
 const Login:FC<LoginProps> = () => {
     const cookies = new Cookies
 
-    if (cookies.get('jwt-token')) {
-        Router.push("/")
-        localStorage.setItem('selectedKey', String(0))
-    }
+    useEffect(() => {
+        if(cookies.get('jwt-token')){
+            localStorage.setItem('selectedKey', '0')
+            Router.push("/")
 
+        }
+    }, [])
     return(<Layout>
+            <div/>
         </Layout>
     )
 }
