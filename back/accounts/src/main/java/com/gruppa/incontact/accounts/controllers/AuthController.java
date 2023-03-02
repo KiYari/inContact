@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 public class AuthController {
     protected final Log logger = LogFactory.getLog(getClass());
 

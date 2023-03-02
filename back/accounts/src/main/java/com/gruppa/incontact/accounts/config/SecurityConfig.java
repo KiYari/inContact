@@ -34,6 +34,8 @@ public class SecurityConfig {
                                 throws Exception {
         http
                 .csrf().disable()
+                .cors()
+                .and()
                 .authorizeHttpRequests(req -> {
                         req
                                 .requestMatchers("/api/auth/**").permitAll()
